@@ -56,7 +56,7 @@ class CombateMenu:
 
     def prompt(self):
         print(f'Você entrou em um combate com o {self.alvo}.')
-        while self.alvo.is_alive() and self.jogador.is_alive():
+        while self.alvo.alive and self.jogador.alive:
             print(f'{self.alvo}: {self.alvo.vida}/{self.alvo.vida_maxima}')
             print(f'{self.jogador}: {self.jogador.vida}/{self.jogador.vida_maxima}')
 
@@ -67,3 +67,5 @@ class CombateMenu:
                 self.alvo.damage(self.jogador.attack_damage, self.jogador)
             elif acao.lower() in ['2', 'defender']:
                 print(f'Você defendeu um ataque do {self.alvo}.')
+
+            self.jogador.tick_veneno()

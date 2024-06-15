@@ -177,7 +177,7 @@ class Estabulo(Sala):
             print('O fazendeiro agradesce.')
             print('Você recebeu 3 de vida máxima')
             jogador = kwargs.get('jogador')
-            jogador.vida_maxima += 3
+            jogador.add_vida_maxima(3)
 
     @staticmethod
     def descrever():
@@ -287,7 +287,7 @@ class Calabouco(Sala):
     def interagir(self, **kwargs):
         concluido = self.desafio.iniciar()
         if concluido:
-            kwargs.get('jogador').crit_chance += 2
+            kwargs.get('jogador').crit_chance += 2.0
             print('Você recebou 20% de crítico.')
         else:
             print('O carrasco já está morto.')
@@ -374,3 +374,145 @@ class SalaTrono(Sala):
 
     def __str__(self):
         return 'Sala do Trono'
+
+
+class SalaTesouro(Sala):
+    def __init__(self, desafio=None):
+        super().__init__(desafio)
+
+    @staticmethod
+    def descrever():
+        print('\nA sala do tesouro do castelo é um espetáculo de riqueza e luxo.'
+              '\nParedes de pedra exibem tapeçarias bordadas em ouro, refletindo a luz das velas.'
+              '\nBaús de madeira maciça, cravejados de jóias, ocupam o centro do espaço.'
+              '\nPilhas de moedas reluzem sob as tochas, enquanto estátuas antigas e artefatos históricos completam a cena.\n')
+
+    def interagir(self, **kwargs):
+        opcao = input('Deseja abrir o baú para pegar o tesouro? (s/N)')
+        if opcao in ('s', 'sim'):
+            print('O verdadeiro tesouro são os amigos que fazemos pelo caminho.')
+            quit()
+
+    def __str__(self):
+        return 'Sala do Tesouro'
+
+
+class SalaTesouroFalsa(SalaTesouro):
+    def interagir(self, **kwargs):
+        opcao = input('Deseja abrir o baú para pegar o tesouro? (s/N)')
+        if opcao.lower() in ('s', 'sim'):
+            print('Você encontrou um mímico.')
+            concluido = self.desafio.iniciar()
+            if concluido:
+                kwargs.get('jogador').vida += 10
+
+
+class Patio(Sala):
+    def __init__(self):
+        super().__init__(None)
+
+    def interagir(self, **kwargs):
+        opcao = input('Deseja descansar? (S/n)')
+        if opcao.lower() in ('s', 'sim'):
+            print('Pisando em solo de cascalho, você se depara com a vista majestosa do castelo que o cerca, a cada lado há uma entrada diferente,'
+                  '\no pátio em si carece de qualquer detalhe, exceto por uma estátua enorme de uma gárgula, completamente cravada em pedra,'
+                  '\naquele ser era o símbolo protetor do castelo, e ele está olhando diretamente para você')
+            kwargs.get('jogador').vida += 5
+
+    @staticmethod
+    def descrever():
+        print('\nO pátio do castelo é um amplo espaço aberto, cercado por muralhas imponentes de pedra.'
+              '\nNo centro, uma fonte de mármore jorra água cristalina, refletindo a luz do sol.'
+              '\nAo redor, fileiras de arcadas cobertas oferecem abrigo contra o sol e a chuva.'
+              '\nTrechos de grama verde intercalam-se com caminhos de cascalho, enquanto trepadeiras decoram os muros antigos, criando um ambiente sereno e acolhedor.\n')
+
+    def __str__(self):
+        return 'Pátio'
+
+
+class Jardim(Sala):
+    @staticmethod
+    def descrever():
+        print('\nO jardim do castelo é um oásis de beleza e tranquilidade.'
+              '\nCanteiros meticulosamente arranjados exibem uma profusão de flores coloridas e arbustos verdejantes.'
+              '\nUm caminho de pedras serpenteia entre os canteiros, levando a um gazebo adornado com heras.'
+              '\nBancos de madeira convidam à contemplação, enquanto borboletas dançam no ar perfumado por rosas e jasmim.\n')
+
+    def __str__(self):
+        return 'Jardim'
+
+
+class QuartoHospedes(Sala):
+    def __init__(self):
+        super().__init__(None)
+
+    @staticmethod
+    def descrever():
+        print('\nO jardim do castelo é um oásis de beleza e tranquilidade.'
+              '\nCanteiros meticulosamente arranjados exibem uma profusão de flores coloridas e arbustos verdejantes.'
+              '\nUm caminho de pedras serpenteia entre os canteiros, levando a um gazebo adornado com heras.'
+              '\nBancos de madeira convidam à contemplação, enquanto borboletas dançam no ar perfumado por rosas e jasmim.\n')
+
+    def interagir(self, **kwargs):
+        opcao = input('Deseja descansar? (S/n)')
+        if opcao.lower() in ('s', 'sim'):
+            print('Descansando...')
+            kwargs.get('jogador').vida += 100
+
+    def __str__(self):
+        return 'Quarto de Hóspedes'
+
+
+class PassagemSecreta(Sala):
+    def __init__(self, desafio):
+        super().__init__(desafio)
+        self.resultado = self.desafio.iniciar()
+
+    def interagir(self, **kwargs):
+        jogador = kwargs.get('jogador')
+        mapa = kwargs.get('mapa')
+        if self.resultado == 6:
+            print('A passagem te levou para o tesouro.')
+            jogador.x = 4
+            jogador.y = 0
+        elif self.resultado == 5:
+            print('A passagem te levou para duas casas de distância do tesouro.')
+            jogador.x = 3
+            jogador.y = 1
+        elif self.resultado == 4:
+            print('A passagem te levou para duas casas de distância do tesouro.')
+            jogador.x = 2
+            jogador.y = 2
+        elif self.resultado == 3:
+            print('A passagem te levou para três casas de distância do tesouro.')
+            jogador.x = 1
+            jogador.y = 3
+        elif self.resultado == 2:
+            print('A passagem te levou para quatro casas de distância do tesouro.')
+            jogador.x = 0
+            jogador.y = 4
+        elif self.resultado == 1:
+            print('Você andou em círculos')
+        jogador.sala_atual = mapa[jogador.y][jogador.x]
+
+    @staticmethod
+    def descrever():
+        print('\nUma passagem secreta no castelo se esconde atrás de um painel de madeira adornado com entalhes intricados.'
+              '\nAo empurrar o painel, revela-se um corredor estreito, iluminado apenas por tochas fracas.'
+              '\nAs paredes de pedra são ásperas ao toque e o ar é fresco e úmido, carregado com um leve aroma de mofo.'
+              '\nO corredor serpenteia por entre as entranhas do castelo, ocultando seu propósito e destino com um ar de mistério e aventura.\n')
+
+    def __str__(self):
+        return 'Passagem Secreta'
+
+
+class SalaoFestas(Sala):
+    @staticmethod
+    def descrever():
+        print('\nO salão de festas do castelo é um ambiente deslumbrante e acolhedor.'
+              '\nGrandes janelas com vitrais coloridos permitem que a luz do sol ilumine o espaço durante o dia.'
+              '\nNo centro, uma pista de dança espaçosa é rodeada por mesas decoradas com arranjos de flores exuberantes.'
+              '\nCandelabros de cristal pendem do teto alto, emitindo uma luz suave que dança nas paredes revestidas de painéis de madeira esculpida.\n')
+
+    def __str__(self):
+        return 'Salão de Festas'

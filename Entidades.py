@@ -20,11 +20,11 @@ def variables_checker(tipo, minimo, maximo):
 
 
 class Entidade:
-    def __init__(self, vida_maxima, crit_chance=2):
+    def __init__(self, vida_maxima, crit_chance=2.0):
         self.__alive = True
         self.__vida_maxima = vida_maxima
         self.__vida = vida_maxima
-        self.__attack_damage = 0
+        self.__attack_damage = 1
         self.__crit_chance = crit_chance
 
     @property
@@ -33,10 +33,7 @@ class Entidade:
 
     @vida.setter
     def vida(self, valor):
-        if valor > self.__vida_maxima:
-            self.__vida = self.__vida_maxima
-        else:
-            self.__vida = valor
+        self.__vida = min(valor, self.__vida_maxima)
 
     @property
     def alive(self):
@@ -79,7 +76,7 @@ class Entidade:
 
     def damage(self, dmg, dmg_source=None):
         self.vida -= dmg
-        if self.__vida <= 0:
+        if self.vida <= 0:
             self.die()
             return
 
@@ -96,6 +93,14 @@ class Entidade:
 
     def curar(self, quantidade):
         self.vida = min(self.__vida_maxima, self.__vida+quantidade)
+
+
+class Monstro(Entidade):
+    def damage(self, dmg, dmg_source=None):
+        super().damage(dmg, dmg_source)
+        if dmg_source is not None:
+            if randint(0, 9) <= 7:
+                self.attack(dmg_source)
 
 
 class Jogador(Entidade):
@@ -116,7 +121,7 @@ class Jogador(Entidade):
     def damage(self, dmg, dmg_source=None):
         super().damage(dmg, dmg_source)
         print(f'Você tomou {dmg} de dano de {dmg_source}')
-        if self.__vida <= 0:
+        if self.vida <= 0:
             self.die()
 
     def adicionar_inventario(self, item: str, quantidade: int):
@@ -139,6 +144,8 @@ class Jogador(Entidade):
             print(self.equipar_arma(arma))
 
     def equipar_arma(self, arma):
+        if arma not in ('espada', 'adaga'):
+            return 'Esse item não pode ser equipado.'
         if self.arma_equipada == arma:
             return 'Já equipada'
         elif arma not in self.inventario:
@@ -174,7 +181,7 @@ class Jogador(Entidade):
 
     def tick_veneno(self):
         if self.tempo_veneno > 0:
-            self.damage(1)
+            self.damage(1, 'veneno')
             self.tempo_veneno -= 1
 
     def die(self):
@@ -185,28 +192,21 @@ class Jogador(Entidade):
         return 'Jogador'
 
 
-class Cozinheiro(Entidade):
+class Cozinheiro(Monstro):
     def __init__(self):
-        super().__init__(15, crit_chance=2)
-        self.__attack_damage = 1
-
-    def damage(self, dmg, dmg_source=None):
-        super().damage(dmg)
-        if dmg_source is not None:
-            if randint(0, 9) <= 7:
-                self.attack(dmg_source)
+        super().__init__(15, crit_chance=2.0)
+        self.attack_damage = 1
 
     def __str__(self):
-        return (''
-                'Cozinheiro')
+        return 'Cozinheiro'
     
 
-class Quimera(Entidade):
+class Quimera(Monstro):
     def __init__(self):
         super().__init__(20)
-        self.__attack_damage = 2
+        self.attack_damage = 2
         self.__veneno_tempo = 3
-        self.__crit_chance = 4
+        self.crit_chance = 4.0
 
     def attack(self, alvo):
         super().attack(alvo)
@@ -214,12 +214,27 @@ class Quimera(Entidade):
             alvo.veneno = True
             alvo.tempo_veneno = self.__veneno_tempo
 
+    def __str__(self):
+        return 'Quimera'
 
-class Carrasco(Entidade):
+
+class Carrasco(Monstro):
     def __init__(self):
         super().__init__(25)
-        self.__attack_damage = 1
-        self.__crit_chance = 7
+        self.attack_damage = 1
+        self.crit_chance = 7.0
+
+    def __str__(self):
+        return 'Carrasco'
+
+
+class Mimico(Monstro):
+    def drop(self):
+        if not self.__alive:
+            return 'Faca de cobre desgastada'
+
+    def __str__(self):
+        return 'Mímico'
 
 
 if __name__ == '__main__':
