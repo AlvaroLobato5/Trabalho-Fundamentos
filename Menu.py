@@ -37,7 +37,6 @@ class MainMenu:
                             '\n')
             if self.jogador.andar(direcao):
                 self.mapa.mover_jogador(self.jogador.x, self.jogador.y)
-                self.jogador.sala_atual.entrar()
 
         elif opcao == '2':
             self.jogador.sala_atual.interagir(jogador=self.jogador, mapa=self.mapa.matriz)

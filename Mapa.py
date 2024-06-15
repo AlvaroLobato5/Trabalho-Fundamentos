@@ -2,33 +2,6 @@ import Salas
 import Desafios
 import Entidades
 
-# Sala do Mago:
-# Dar 7 palavras e preciso fazer uma magia que ilumine uma grande área e combine 2 palavras em latim
-# lux, area, ignis, verba, noctem, vita, lupum
-# Area lux
-
-
-# Sala de Jantar:
-# Você tem um prato de salada na sua frente, descrever uma verdura e perguntar qual é
-
-# Calabouço:
-# Matar o Carrasco
-
-# Sala de Música:
-# Quantas sinfonias Mozart tem
-# 41
-
-# Aposentos Rei:
-# RNG de D6, pra roubar a coroa
-
-# Torre:
-# Você está vendo por um telescópio a silhueta de 3 criaturas.
-# Descrever goblins e a resposta é goblin
-
-# Sala do Trono:
-# Se tiver roubado a coroa, vai ser pego pelos guardas
-# Desafio/Enigma:
-# O que é que de manhã tem quatro patas, de tarde tem duas e de noite tem três? O ser humano.
 
 # Sala Tesouro Falsa:
 # Combate mímico
@@ -59,9 +32,16 @@ class Mapa:
                                         'consegue me segurar por mais de cinco minutos. O que sou?',
                                       respostas=('a respiração', 'respiração'))),
             'Tesouro'],
-            [Salas.Cozinha(Desafios.Combate(jogador=self.jogador, alvo=Entidades.Cozinheiro())), 'Sala de Jantar', 'Calabouço', 'Sala de Música', 'Aposentos Rei'],
-            ['Jardim', 'Pátio', Salas.Estabulo(
-                Desafios.Quiz(texto='Dado os seguintes animais e alimentos, associe cada alimento ao animal correto, respectivamente. '
+            [Salas.Cozinha(Desafios.Combate(jogador=self.jogador, alvo=Entidades.Cozinheiro())),
+             Salas.SalaJantar(Desafios.Quiz(texto='Em frente, há uma verdura de folhas largas e onduladas, com um verde vibrante e bordas ligeiramente serrilhadas.'
+                                                  '\nA textura é crocante e refrescante, e as folhas parecem quase brilhosas sob a luz.'
+                                                  '\nEsta verdura é frequentemente usada em saladas por seu sabor leve e agradável.'
+                                                  '\nQual é essa verdura?', respostas=('a alface', 'alface'))),
+            Salas.Calabouco(Desafios.Combate(jogador=self.__jogador, alvo=Entidades.Carrasco())),
+             Salas.SalaMusica(Desafios.Quiz(texto='Quantas sinfonias Mozart tem?', respostas=('41', 'quarenta e um'))),
+             Salas.AposentosRei(Desafios.Dado())],
+            ['Jardim', 'Pátio',
+             Salas.Estabulo(Desafios.Quiz(texto='Dado os seguintes animais e alimentos, associe cada alimento ao animal correto, respectivamente. '
                                 '\nAnimais: Leão, Coelho, Panda'
                                 '\nAlimentos: Cenouras, Bambu, Antílopes'
                                 '\nPadrão de resposta Animal1 - Alimento1, Animal2 - Alimento2, Animal3 - Alimento3'
@@ -69,14 +49,20 @@ class Mapa:
                                 respostas=('leão - antílopes, coelho - cenouras, panda - bambu', ))),
              Salas.Capela(Desafios.Quiz(texto="Coloque os livros da Bíblia em ordem cronológica: Josué, Êxodo, Juízes e Esdras\nEx: 1 Samuel - 2 Samuel - 1 Reis - 2 Reis (Use espaços)",
                                         respostas=('êxodo - josué - juízes - esdras', ))), 'Salão de Festas'],
-            ['Torre', Salas.Laboratorio(Desafios.Combate(jogador=self.jogador, alvo=Entidades.Quimera())),
+            [Salas.Torre(Desafios.Quiz(texto='\nAtravés do telescópio, avista-se três criaturas de aparência furtiva e desgrenhada, movendo-se cautelosamente entre as árvores retorcidas da floresta.'
+                                              '\nSuas peles verdes e manchadas contrastam com o ambiente sombrio ao redor, e elas parecem estar em constante vigilância, examinando o terreno com olhos astutos.'
+                                              '\nArmadas com lanças rudimentares e vestindo trapos improvisados, elas se comunicam em grunhidos guturais enquanto desaparecem rapidamente entre as sombras, deixando uma sensação de intriga e perigo iminente.'
+                                              '\nQue criaturas misteriosas são essas?\n',
+                                       respostas=('goblin', 'goblins'))),
+             Salas.Laboratorio(Desafios.Combate(jogador=self.jogador, alvo=Entidades.Quimera())),
              Salas.SalaMago(Desafios.Quiz(texto='Utilize 2 das 9 palavras abaixo para criar um feitiço de luz em área: \nlux, area, ignis, verba, noctem, vita, lupum',
                                           respostas=('area lux',))),
              Salas.GaleriaDeArte(Desafios.Quiz(textos=
                                                ('Esta pintura, criada em 1889, retrata um céu noturno turbulento com vórtices celestes e uma lua crescente sobre um vilarejo adormecido. Qual é o nome dessa obra famosa?',
                                                 'Esta obra icônica foi pintada pelo artista holandês Vincent van Gogh enquanto ele estava internado em um asilo em Saint-Rémy-de-Provence. Como se chama essa pintura?',
                                                 'Considerada uma das mais conhecidas obras de arte do pós-impressionismo, esta pintura de Vincent van Gogh é conhecida por seu céu agitado e estrelado. Qual é o nome desta obra?'),
-                                               respostas=('a noite estrelada', 'noite estrelada'))), 'Sala do Trono'],
+                                               respostas=('a noite estrelada', 'noite estrelada'))),
+             Salas.SalaTrono(Desafios.Quiz(texto='O que é que de manhã tem quatro patas, de tarde tem duas e de noite tem três?', respostas=('o ser humano', 'ser humano')))],
             [Salas.SalaGuardas(Desafios.Quiz(
                 texto='Você se depara com dois guardas na frente de duas portas. Um dos guardas sempre mente, e o outro sempre diz a verdade.'
                       ' Uma das portas leva à liberdade, enquanto a outra leva à morte.'
@@ -86,8 +72,9 @@ class Mapa:
                       '\n 3. Qual porta você guarda?'
                       '\n 4. A outra porta leva à morte?'
                       '\n 5. A porta à sua esquerda leva à liberdade?\n',
-                respostas=('2', 'se eu perguntasse ao outro guarda qual porta leva à liberdade, o que ele me diria?'))), Salas.Corredor(Desafios.Quiz(texto='Qual o nome do Pai de Naruto?',
-                                                        respostas=('minato namikaze', 'namikaze minato'))), 'Sala Tesouro Falsa',
+                respostas=('2', 'se eu perguntasse ao outro guarda qual porta leva à liberdade, o que ele me diria?'))),
+                Salas.Corredor(Desafios.Quiz(texto='Qual o nome do Pai de Naruto?',
+                                             respostas=('minato namikaze', 'namikaze minato'))), 'Sala Tesouro Falsa',
              'Passagem secreta', 'Quarto Hóspedes']
         ]
 
@@ -103,3 +90,7 @@ class Mapa:
 
     def mover_jogador(self, x, y):
         self.jogador.sala_atual = self.matriz[y][x]
+        try:
+            self.jogador.sala_atual.entrar()
+        except AttributeError:
+            pass

@@ -9,6 +9,9 @@ class Sala:
     def descrever():
         print('\nSala vazia\n')
 
+    def interagir(self, **kwargs):
+        self.desafio.iniciar()
+
     def __str__(self):
         return 'Sala'
 
@@ -16,12 +19,6 @@ class Sala:
 class Entrada(Sala):
     def __init__(self):
         super().__init__(None)
-
-    def entrar(self):
-        print('Você está na entrada!')
-        interagir_guardas = input('Você encontrou 2 guardas na porta, deseja interagir com eles? (S/N)')
-        if interagir_guardas == 'S':
-            print('Você foi ignorado.')
 
     @staticmethod
     def descrever():
@@ -46,8 +43,6 @@ class Entrada(Sala):
 
 
 class Corredor(Sala):
-    def entrar(self):
-        print('Você está no corredor')
 
     @staticmethod
     def descrever():
@@ -76,9 +71,6 @@ class SalaArmas(Sala):
                 '\nO ar é impregnado com o cheiro de óleo de manutenção e metal polido, criando uma atmosfera de prontidão e tradição militar.'
                 '\nCada detalhe da sala evoca a sensação de preparação constante e respeito pelas artes da guerra.\n')
 
-    def entrar(self):
-        print('Você entrou em uma sala cheia de armas.')
-
     def interagir(self, **kwargs):
         opcao = input('Deseja roubar? (s/N)')
         if opcao == 'S':
@@ -95,8 +87,6 @@ class SalaArmas(Sala):
 
 
 class Biblioteca(Sala):
-    def entrar(self):
-        print('Você encontrou uma biblioteca abandonada.')
 
     def interagir(self, **kwargs):
         if self.desafio.iniciar():
@@ -119,8 +109,6 @@ class Biblioteca(Sala):
 
 
 class Cozinha(Sala):
-    def entrar(self):
-        print('Você entrou na cozinha.')
 
     def interagir(self, **kwargs):
         opcao = input('Tentar roubar comida da cozinha? (s/N)')
@@ -144,8 +132,6 @@ class Cozinha(Sala):
 
 
 class GaleriaDeArte(Sala):
-    def entrar(self):
-        print('Você entrou na galeria de arte')
 
     def interagir(self, **kwargs):
         self.desafio.iniciar()
@@ -155,8 +141,6 @@ class GaleriaDeArte(Sala):
 
 
 class SalaGuardas(Sala):
-    def entrar(self):
-        print('Você entrou em uma sala com dois guardas.')
 
     @staticmethod
     def descrever():
@@ -182,8 +166,6 @@ class SalaGuardas(Sala):
 
 
 class Estabulo(Sala):
-    def entrar(self):
-        print('Você entrou no estábulo')
 
     def interagir(self, **kwargs):
         concluido = self.desafio.iniciar()
@@ -212,9 +194,6 @@ class Estabulo(Sala):
 
 
 class Laboratorio(Sala):
-    def entrar(self):
-        print('Você entrou no laboratório.')
-
     def interagir(self, **kwargs):
         opcao = input('Tentar roubar poção de dano? (s/N)')
         if opcao.lower() in ['s', 'Sim']:
@@ -240,8 +219,6 @@ class Laboratorio(Sala):
 
 
 class Capela(Sala):
-    def entrar(self):
-        print('Você entrou na capela')
 
     def interagir(self, **kwargs):
         self.desafio.iniciar()
@@ -262,10 +239,6 @@ class Capela(Sala):
 
 
 class SalaMago(Sala):
-    
-    def entrar(self):
-        print('Você entrou na sala do mago')
-
     def interagir(self, **kwargs):
         jogador = kwargs.get('jogador')
         mapa = kwargs.get('mapa')
@@ -294,5 +267,110 @@ class SalaMago(Sala):
         return 'Sala do Mago'
 
 
-if __name__ == '__main__':
-    print(Corredor.descrever())
+class SalaJantar(Sala):
+
+    @staticmethod
+    def descrever():
+        print('\nA sala de jantar do castelo é grandiosa e acolhedora, com paredes adornadas por tapeçarias heroicas.'
+              '\nUma longa mesa de carvalho polido é cercada por cadeiras esculpidas e iluminada por candelabros de ferro forjado.'
+              '\nAromas de carnes assadas e pães frescos permeiam o ar, enquanto lareiras aquecem a sala.'
+              '\nTapetes luxuosos e luz natural dos vitrais coloridos completam o ambiente, ideal para banquetes e reuniões nobres.\n')
+
+    def interagir(self, **kwargs):
+        self.desafio.iniciar()
+
+    def __str__(self):
+        return 'Sala do Mago'
+
+
+class Calabouco(Sala):
+    def interagir(self, **kwargs):
+        concluido = self.desafio.iniciar()
+        if concluido:
+            kwargs.get('jogador').crit_chance += 2
+            print('Você recebou 20% de crítico.')
+        else:
+            print('O carrasco já está morto.')
+    
+    @staticmethod
+    def descrever():
+        print('\nO calabouço do castelo é um local sombrio e úmido, com paredes de pedra fria cobertas de musgo.'
+              '\nPequenas celas com grades de ferro enferrujado contêm correntes e argolas fixadas nas paredes.'
+              '\nTochas esparsas lançam sombras longas e sinistras, criando uma atmosfera opressiva.'
+              '\nO ar é denso, carregado com o cheiro de mofo e dejetos, aumentando a sensação de isolamento e desespero.\n')
+    
+    def __str__(self):
+        return 'Calabouço'
+
+
+class SalaMusica(Sala):
+    @staticmethod
+    def descrever():
+        print('\nA sala de música do castelo é um espaço elegante e inspirador.'
+              '\nParedes decoradas com tapeçarias acústicas ajudam a suavizar os sons, criando uma acústica perfeita.'
+              '\nNo centro da sala, um grande piano de cauda de madeira escura brilha à luz suave dos candelabros.'
+              '\nInstrumentos variados, como violinos, harpas e flautas, estão dispostos cuidadosamente em suportes ao redor da sala, prontos para serem tocados.\n')
+
+    def __str__(self):
+        return 'Sala de Música'
+
+
+class AposentosRei(Sala):
+    @staticmethod
+    def descrever():
+        print('\nO aposento do rei é um espaço luxuoso e imponente.'
+              '\nParedes revestidas com tapeçarias ricas exibem cenas de batalhas e caçadas, emolduradas por colunas de mármore polido.'
+              '\nNo centro, uma enorme cama com dossel é adornada com cortinas de veludo escarlate e lençóis de seda dourada.'
+              '\nMóveis de madeira entalhada, incluindo um trono imponente e uma escrivaninha ornamentada, completam o ambiente, enquanto candelabros de prata lançam uma luz cálida e suave.\n')
+
+    def interagir(self, **kwargs):
+        resultado = self.desafio.iniciar()
+        jogador = kwargs.get('jogador')
+        if resultado == 1:
+            jogador.damage(100)
+        elif resultado == 2:
+            jogador.damage(int(jogador.vida_maxima*0.75))
+        elif resultado == 3:
+            jogador.damage(int(jogador.vida_maxima*0.5))
+        elif resultado == 4:
+            jogador.damage(int(jogador.vida_maxima*0.25))
+        elif resultado == 5:
+            jogador.damage(int(jogador.vida*0.25))
+            jogador.inventario['coroa'] = 1
+        elif resultado == 6:
+            jogador.inventario['coroa'] = 1
+
+    def __str__(self):
+        return 'Aposentos do Rei'
+
+
+class Torre(Sala):
+    @staticmethod
+    def descrever():
+        print('\nA torre do castelo ergue-se imponente contra o céu, sua estrutura de pedra cinza alcançando alturas impressionantes.'
+              '\nJanelas estreitas e seteiras pontuam as paredes grossas, oferecendo vistas estratégicas e uma defesa robusta.'
+              '\nNo topo, um telhado cônico de ardósia escura protege os ocupantes das intempéries, enquanto bandeiras coloridas tremulam ao vento.'
+              '\nUma escada em espiral de pedra serpenteia pelo interior, conduzindo aos diferentes níveis onde quartos, armaria e salas de observação se entrelaçam numa teia de segredos e estratégia.\n')
+
+    def interagir(self, **kwargs):
+        self.desafio.iniciar()
+
+    def __str__(self):
+        return 'Torre'
+
+
+class SalaTrono(Sala):
+    def entrar(self, jogador):
+        if 'coroa' in jogador.inventario.keys():
+            print('Os guardas te prenderam')
+            quit()
+
+    @staticmethod
+    def descrever():
+        print('\nA sala do trono do castelo é um espetáculo de grandiosidade e poder.'
+              '\nEnormes colunas de mármore branco se erguem ao redor, adornadas com entalhes intrincados que contam histórias de glória passada.'
+              '\nNo centro, um trono maciço de carvalho é ornamentado com ouro e pedras preciosas, refletindo a autoridade e o prestígio do rei.'
+              '\nTapetes tecidos à mão cobrem o piso de pedra, abafando o som dos passos e adicionando um toque de luxo ao ambiente majestoso.\n')
+
+    def __str__(self):
+        return 'Sala do Trono'

@@ -1,24 +1,22 @@
 from random import randint
 
 
-class Decorators:
-    @staticmethod
-    def variables_decorator(tipo, mininimo, maximo):
-        def decorator(func):
-            def inner(self, valor):
+def variables_checker(tipo, minimo, maximo):
+    def decorator(func):
+        def inner(self, valor):
 
-                if type(valor) != tipo:
-                    tipo_str = str(tipo).replace('<class \'', '').replace('\'>', '')
-                    raise TypeError(f'Valor deve ser um {tipo_str}.')
+            if type(valor) != tipo:
+                tipo_str = str(tipo).replace('<class \'', '').replace('\'>', '')
+                raise TypeError(f'Valor deve ser um {tipo_str}.')
 
-                if mininimo < valor <= maximo:
-                    func(self, valor)
-                else:
-                    raise ValueError('Valor deve estar entre 1 e 5')
+            if minimo < valor <= maximo:
+                func(self, valor)
+            else:
+                raise ValueError(f'Valor deve estar entre {minimo} e {maximo}')
 
-            return inner
+        return inner
 
-        return decorator
+    return decorator
 
 
 class Entidade:
@@ -49,7 +47,7 @@ class Entidade:
         return self.__vida_maxima
 
     @vida_maxima.setter
-    @Decorators.variables_decorator(int, 0, 30)
+    @variables_checker(int, 0, 30)
     def vida_maxima(self, valor):
         self.__vida_maxima = valor
 
@@ -75,12 +73,12 @@ class Entidade:
         return self.__attack_damage
 
     @crit_chance.setter
-    @Decorators.variables_decorator(float, 0, 10)
+    @variables_checker(float, 0, 10)
     def crit_chance(self, valor):
         self.__crit_chance = valor
 
     def damage(self, dmg, dmg_source=None):
-        self.__vida -= dmg
+        self.vida -= dmg
         if self.__vida <= 0:
             self.die()
             return
@@ -215,6 +213,13 @@ class Quimera(Entidade):
         if randint(1, 10) > 7:
             alvo.veneno = True
             alvo.tempo_veneno = self.__veneno_tempo
+
+
+class Carrasco(Entidade):
+    def __init__(self):
+        super().__init__(25)
+        self.__attack_damage = 1
+        self.__crit_chance = 7
 
 
 if __name__ == '__main__':

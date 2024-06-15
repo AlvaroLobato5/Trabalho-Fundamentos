@@ -1,5 +1,5 @@
 import os
-import Menu
+from random import randint
 
 
 class Desafio:
@@ -60,6 +60,16 @@ class Combate(Desafio):
         self.jogador.em_combate = False
         self.resolvido = True
         return True
+
+
+class Dado(Desafio):
+    def __init__(self, dx=6):
+        super().__init__()
+        self.dX = dx
+
+    def iniciar(self):
+        self.resolvido = True
+        return randint(1, self.dX)
 
 
 if __name__ == '__main__':
