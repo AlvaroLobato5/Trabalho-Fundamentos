@@ -25,7 +25,8 @@ class MainMenu:
                       f'\n2. Interagir com a sala ({self.jogador.sala_atual})'
                       f'\n3. Descrever o ambiente'
                       '\n4. Verificar inventário'
-                      '\n5. Sair do jogo'
+                      '\n5. Ver atributos'
+                      '\n6. Sair do jogo'
                       '\n')
         if opcao == '1':
 
@@ -45,6 +46,8 @@ class MainMenu:
         elif opcao == '4':
             self.jogador.exibir_inventario()
         elif opcao == '5':
+            self.jogador.exibir_atributos()
+        elif opcao == '6':
             print('Tchau!')
             quit()
 

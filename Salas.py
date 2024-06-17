@@ -76,7 +76,9 @@ class SalaArmas(Sala):
         if opcao == 'S':
             concluido = self.desafio.iniciar()
             if concluido:
-                kwargs.get('jogador').adicionar_inventario(self.itens[randint(0, 1)], 1)
+                item = self.itens[randint(0, 1)], 1
+                kwargs.get('jogador').adicionar_inventario(item)
+                print(f'Você recebeu {item}')
             elif concluido is None:
                 print('Essa sala já foi roubada.')
             elif not concluido:
@@ -116,6 +118,7 @@ class Cozinha(Sala):
             concluido = self.desafio.iniciar()
             if concluido:
                 kwargs.get('jogador').curar(10)
+                print('Você recebeu 10 de cura.')
             elif concluido is None:
                 print('Cozinha já roubada.')
 
@@ -160,6 +163,9 @@ class SalaGuardas(Sala):
         elif not concluido:
             print('Você escolheu a porta errada!')
             quit()
+        elif concluido:
+            kwargs.get('jogador').vida_maxima += 5
+            print('Você recebeu 5 de vida máxima.')
 
     def __str__(self):
         return 'Sala de Guardas'
@@ -175,9 +181,9 @@ class Estabulo(Sala):
             print('Você errou a ordem dos alimentos.')
         else:
             print('O fazendeiro agradesce.')
-            print('Você recebeu 3 de vida máxima')
+            print('Você recebeu 5 de vida máxima')
             jogador = kwargs.get('jogador')
-            jogador.add_vida_maxima(3)
+            jogador.add_vida_maxima(5)
 
     @staticmethod
     def descrever():
@@ -200,6 +206,7 @@ class Laboratorio(Sala):
             concluido = self.desafio.iniciar()
             if concluido:
                 kwargs.get('jogador').attack_damage += 1
+                print('Você recebeu 1 de dano de ataque.')
             elif concluido is None:
                 print('Poção já roubada.')
 
@@ -405,6 +412,7 @@ class SalaTesouroFalsa(SalaTesouro):
             concluido = self.desafio.iniciar()
             if concluido:
                 kwargs.get('jogador').vida += 10
+                print('Você foi curado em 10 de vida.')
 
 
 class Patio(Sala):

@@ -138,18 +138,23 @@ class Jogador(Entidade):
             print(f'{k}: {v}')
         print('\n'+'-'*20)
 
-        res = input('Deseja equipar alguma arma? (s/N)')
-        if res.lower() in ['s', 'sim']:
-            arma = input('Qual arma você deseja equipar?')
-            print(self.equipar_arma(arma))
+        if 'espada' in self.inventario.items():
+            res = input('Deseja equipar a espada? (s/N)')
+            if res.lower() in ['s', 'sim']:
+                print(self.equipar_arma('espada'))
+        elif 'adaga' in self.inventario.items():
+            res = input('Deseja equipar a adaga? (s/N)')
+            if res.lower() in ['s', 'sim']:
+                print(self.equipar_arma('adaga'))
+
+    def exibir_atributos(self):
+        print('-'*20+'\n')
+        print(f'Vida: {self.vida}/{self.vida_maxima}')
+        print(f'Dano de ataque: {self.attack_damage}')
+        print(f'Chance de crítico: {self.crit_chance*10}%')
+        print('\n'+'-'*20)
 
     def equipar_arma(self, arma):
-        if arma not in ('espada', 'adaga'):
-            return 'Esse item não pode ser equipado.'
-        if self.arma_equipada == arma:
-            return 'Já equipada'
-        elif arma not in self.inventario:
-            return 'Você não possui essa arma'
         self.arma_equipada = arma
         self.__attack_damage += 1
         return 'Arma equipada com sucesso'
