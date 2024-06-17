@@ -74,8 +74,6 @@ class Mapa:
              Salas.PassagemSecreta(Desafios.Dado()), Salas.QuartoHospedes()]
         ]
 
-        self.jogador.sala_atual = self.matriz[0][0]
-
     @property
     def matriz(self):
         return self.__matriz
@@ -86,6 +84,7 @@ class Mapa:
 
     def mover_jogador(self, x, y):
         self.__jogador.sala_atual = self.matriz[y][x]
+        self.__jogador.sala_atual.entrar(self.jogador)
         try:
             self.__jogador.sala_atual.entrar(self.__jogador)
         except AttributeError:

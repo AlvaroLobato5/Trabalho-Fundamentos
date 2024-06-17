@@ -6,7 +6,8 @@ from time import sleep
 
 def main():
     jogador = Jogador(vida_maxima=10)
-    mapa = Mapa(jogador)
+    mapa = Mapa(jogador=jogador)
+    mapa.mover_jogador(0, 0)
     jogador.main_menu = MainMenu(mapa)
     jogador.combate_menu = CombateMenu(jogador, None)
     while jogador.alive:
@@ -14,7 +15,7 @@ def main():
         jogador.main_menu.prompt()
         sleep(1)
 
-    input('Você morreu...\n Aperte Enter para sair.')
+    input('Você morreu...\nAperte Enter para sair.')
 
 
 if __name__ == '__main__':

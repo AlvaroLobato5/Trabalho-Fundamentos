@@ -38,7 +38,7 @@ class Entrada(Sala):
 
         if opcao.lower() in ['s', 'sim']:
             print('Os guardas te pegaram.')
-            self.jogador.die()()
+            self.jogador.die()
         else:
             print('Nada aconteceu.')
 
