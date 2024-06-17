@@ -1,6 +1,6 @@
-from Mapa import Mapa
-from Entidades import Jogador
-from Menu import MainMenu, CombateMenu
+from Jogo.Mapa import Mapa
+from Jogo.Entidades import Jogador
+from Jogo.Menu import MainMenu, CombateMenu
 from time import sleep
 
 
@@ -9,10 +9,12 @@ def main():
     mapa = Mapa(jogador)
     jogador.main_menu = MainMenu(mapa)
     jogador.combate_menu = CombateMenu(jogador, None)
-    while True:
+    while jogador.alive:
         jogador.tick_veneno()
         jogador.main_menu.prompt()
         sleep(1)
+
+    input('Você morreu...\n Aperte Enter para sair.')
 
 
 if __name__ == '__main__':

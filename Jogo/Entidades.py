@@ -89,7 +89,6 @@ class Entidade:
 
     def die(self):
         self.__alive = False
-        print('Morto')
 
     def curar(self, quantidade):
         self.vida = min(self.__vida_maxima, self.__vida+quantidade)
@@ -188,10 +187,6 @@ class Jogador(Entidade):
         if self.tempo_veneno > 0:
             self.damage(1, 'veneno')
             self.tempo_veneno -= 1
-
-    def die(self):
-        print('Você morreu.')
-        quit()
 
     def __str__(self):
         return 'Jogador'

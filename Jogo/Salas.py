@@ -4,6 +4,10 @@ from random import randint
 class Sala:
     def __init__(self, desafio):
         self.desafio = desafio
+        self.jogador = None
+
+    def entrar(self, jogador):
+        self.jogador = jogador
 
     @staticmethod
     def descrever():
@@ -34,7 +38,7 @@ class Entrada(Sala):
 
         if opcao.lower() in ['s', 'sim']:
             print('Os guardas te pegaram.')
-            quit()
+            self.jogador.die()()
         else:
             print('Nada aconteceu.')
 
@@ -77,7 +81,7 @@ class SalaArmas(Sala):
             concluido = self.desafio.iniciar()
             if concluido:
                 item = self.itens[randint(0, 1)], 1
-                kwargs.get('jogador').adicionar_inventario(item)
+                self.jogador.adicionar_inventario(item)
                 print(f'Você recebeu {item}')
             elif concluido is None:
                 print('Essa sala já foi roubada.')
@@ -117,7 +121,7 @@ class Cozinha(Sala):
         if opcao.lower() in ['s', 'Sim']:
             concluido = self.desafio.iniciar()
             if concluido:
-                kwargs.get('jogador').curar(10)
+                self.jogador.curar(10)
                 print('Você recebeu 10 de cura.')
             elif concluido is None:
                 print('Cozinha já roubada.')
@@ -162,9 +166,9 @@ class SalaGuardas(Sala):
             pass
         elif not concluido:
             print('Você escolheu a porta errada!')
-            quit()
+            self.jogador.die()()
         elif concluido:
-            kwargs.get('jogador').vida_maxima += 5
+            self.jogador.vida_maxima += 5
             print('Você recebeu 5 de vida máxima.')
 
     def __str__(self):
@@ -182,7 +186,7 @@ class Estabulo(Sala):
         else:
             print('O fazendeiro agradesce.')
             print('Você recebeu 5 de vida máxima')
-            jogador = kwargs.get('jogador')
+            jogador = self.jogador
             jogador.add_vida_maxima(5)
 
     @staticmethod
@@ -192,7 +196,7 @@ class Estabulo(Sala):
                 '\nA fragrância mista de feno fresco e grãos enche o ar, combinada com o cheiro reconfortante de couro e esterco.'
                 '\nLuz natural entra pelas janelas altas, iluminando os espaços arejados onde os cavalariços habilidosos cuidam meticulosamente dos animais.'
                 '\nO som de ferraduras batendo no chão de pedra ecoa pelo estábulo, criando uma sinfonia harmoniosa que complementa a energia vibrante do ambiente.'
-                '\nFerramentas de equitação pendem das paredes de madeira, ao lado de escovas e baldes usados para a limpeza e manutenção diária dos cavalos.'
+                '\nFerramentas de eself.jogador.die()ação pendem das paredes de madeira, ao lado de escovas e baldes usados para a limpeza e manutenção diária dos cavalos.'
                 '\nO estábulo é mais do que um lugar de abrigo para os animais; é um centro de cuidado e treinamento, essencial para a vida cotidiana e as operações do castelo medieval.\n')
 
     def __str__(self):
@@ -205,7 +209,7 @@ class Laboratorio(Sala):
         if opcao.lower() in ['s', 'Sim']:
             concluido = self.desafio.iniciar()
             if concluido:
-                kwargs.get('jogador').attack_damage += 1
+                self.jogador.attack_damage += 1
                 print('Você recebeu 1 de dano de ataque.')
             elif concluido is None:
                 print('Poção já roubada.')
@@ -247,16 +251,15 @@ class Capela(Sala):
 
 class SalaMago(Sala):
     def interagir(self, **kwargs):
-        jogador = kwargs.get('jogador')
         mapa = kwargs.get('mapa')
         concluido = self.desafio.iniciar()
 
         if concluido:
             print('O feitiço ilumina seu caminho e revela as salas ao seu redor')
-            jogador.mapa_descoberto[jogador.y - 1][jogador.x] = mapa[jogador.y - 1][jogador.x]
-            jogador.mapa_descoberto[jogador.y + 1][jogador.x] = mapa[jogador.y + 1][jogador.x]
-            jogador.mapa_descoberto[jogador.y][jogador.x - 1] = mapa[jogador.y][jogador.x - 1]
-            jogador.mapa_descoberto[jogador.y][jogador.x + 1] = mapa[jogador.y][jogador.x + 1]
+            self.jogador.mapa_descoberto[self.jogador.y - 1][self.jogador.x] = mapa[self.jogador.y - 1][self.jogador.x]
+            self.jogador.mapa_descoberto[self.jogador.y + 1][self.jogador.x] = mapa[self.jogador.y + 1][self.jogador.x]
+            self.jogador.mapa_descoberto[self.jogador.y][self.jogador.x - 1] = mapa[self.jogador.y][self.jogador.x - 1]
+            self.jogador.mapa_descoberto[self.jogador.y][self.jogador.x + 1] = mapa[self.jogador.y][self.jogador.x + 1]
 
     @staticmethod
     def descrever():
@@ -294,7 +297,7 @@ class Calabouco(Sala):
     def interagir(self, **kwargs):
         concluido = self.desafio.iniciar()
         if concluido:
-            kwargs.get('jogador').crit_chance += 2.0
+            self.jogador.crit_chance += 2.0
             print('Você recebou 20% de crítico.')
         else:
             print('O carrasco já está morto.')
@@ -332,7 +335,7 @@ class AposentosRei(Sala):
 
     def interagir(self, **kwargs):
         resultado = self.desafio.iniciar()
-        jogador = kwargs.get('jogador')
+        jogador = self.jogador
         if resultado == 1:
             jogador.damage(100)
         elif resultado == 2:
@@ -368,9 +371,10 @@ class Torre(Sala):
 
 class SalaTrono(Sala):
     def entrar(self, jogador):
-        if 'coroa' in jogador.inventario.keys():
+        super().entrar(jogador)
+        if 'coroa' in self.jogador.inventario.keys():
             print('Os guardas te prenderam')
-            quit()
+            self.jogador.die()
 
     @staticmethod
     def descrever():
@@ -398,7 +402,7 @@ class SalaTesouro(Sala):
         opcao = input('Deseja abrir o baú para pegar o tesouro? (s/N)')
         if opcao in ('s', 'sim'):
             print('O verdadeiro tesouro são os amigos que fazemos pelo caminho.')
-            quit()
+            self.jogador.die()()
 
     def __str__(self):
         return 'Sala do Tesouro'
@@ -411,7 +415,7 @@ class SalaTesouroFalsa(SalaTesouro):
             print('Você encontrou um mímico.')
             concluido = self.desafio.iniciar()
             if concluido:
-                kwargs.get('jogador').vida += 10
+                self.jogador.vida += 10
                 print('Você foi curado em 10 de vida.')
 
 
@@ -425,7 +429,7 @@ class Patio(Sala):
             print('Pisando em solo de cascalho, você se depara com a vista majestosa do castelo que o cerca, a cada lado há uma entrada diferente,'
                   '\no pátio em si carece de qualquer detalhe, exceto por uma estátua enorme de uma gárgula, completamente cravada em pedra,'
                   '\naquele ser era o símbolo protetor do castelo, e ele está olhando diretamente para você')
-            kwargs.get('jogador').vida += 5
+            self.jogador.vida += 5
 
     @staticmethod
     def descrever():
@@ -465,7 +469,7 @@ class QuartoHospedes(Sala):
         opcao = input('Deseja descansar? (S/n)')
         if opcao.lower() in ('s', 'sim'):
             print('Descansando...')
-            kwargs.get('jogador').vida += 100
+            self.jogador.vida += 100
 
     def __str__(self):
         return 'Quarto de Hóspedes'
@@ -477,31 +481,30 @@ class PassagemSecreta(Sala):
         self.resultado = self.desafio.iniciar()
 
     def interagir(self, **kwargs):
-        jogador = kwargs.get('jogador')
         mapa = kwargs.get('mapa')
         if self.resultado == 6:
             print('A passagem te levou para o tesouro.')
-            jogador.x = 4
-            jogador.y = 0
+            self.jogador.x = 4
+            self.jogador.y = 0
         elif self.resultado == 5:
             print('A passagem te levou para duas casas de distância do tesouro.')
-            jogador.x = 3
-            jogador.y = 1
+            self.jogador.x = 3
+            self.jogador.y = 1
         elif self.resultado == 4:
             print('A passagem te levou para duas casas de distância do tesouro.')
-            jogador.x = 2
-            jogador.y = 2
+            self.jogador.x = 2
+            self.jogador.y = 2
         elif self.resultado == 3:
             print('A passagem te levou para três casas de distância do tesouro.')
-            jogador.x = 1
-            jogador.y = 3
+            self.jogador.x = 1
+            self.jogador.y = 3
         elif self.resultado == 2:
             print('A passagem te levou para quatro casas de distância do tesouro.')
-            jogador.x = 0
-            jogador.y = 4
+            self.jogador.x = 0
+            self.jogador.y = 4
         elif self.resultado == 1:
             print('Você andou em círculos')
-        jogador.sala_atual = mapa[jogador.y][jogador.x]
+        self.jogador.sala_atual = mapa[self.jogador.y][self.jogador.x]
 
     @staticmethod
     def descrever():
