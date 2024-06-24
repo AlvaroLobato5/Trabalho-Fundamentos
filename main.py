@@ -13,7 +13,7 @@ def main():
     while jogador.alive:
         jogador.tick_veneno()
         jogador.main_menu.prompt()
-        sleep(1)
+        sleep(0.5)
 
     input('Você morreu...\nAperte Enter para sair.')
 

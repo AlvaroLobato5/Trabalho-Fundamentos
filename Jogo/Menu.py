@@ -22,7 +22,7 @@ class MainMenu:
 
         opcao = input('O que você deseja fazer?'
                       '\n1. Se movimentar'
-                      f'\n2. Interagir com a sala ({self.jogador.sala_atual})'
+                      f'\n2. Desafiar a sala ({self.jogador.sala_atual})'
                       f'\n3. Descrever o ambiente'
                       '\n4. Verificar inventário'
                       '\n5. Ver atributos'
@@ -40,7 +40,7 @@ class MainMenu:
                 self.mapa.mover_jogador(self.jogador.x, self.jogador.y)
 
         elif opcao == '2':
-            self.jogador.sala_atual.interagir(jogador=self.jogador, mapa=self.mapa.matriz)
+            self.jogador.sala_atual.desafiar(jogador=self.jogador, mapa=self.mapa.matriz)
         elif opcao == '3':
             self.jogador.sala_atual.descrever()
         elif opcao == '4':

@@ -13,7 +13,7 @@ class Sala:
     def descrever():
         print('\nSala vazia\n')
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         self.desafio.iniciar()
 
     def __str__(self):
@@ -31,7 +31,7 @@ class Entrada(Sala):
                 '\nCorrentes robustas e engrenagens são visíveis, prontas para ação. O ambiente é marcado pela ausência de guardas, mas a sensação de vigilância persiste, transmitida pelos detalhes funcionais do espaço.'
                 '\nArmaduras e armas estão organizadas meticulosamente, reforçando a atmosfera de prontidão e defesa implacável.\n')
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         opcao = input('Você encontrou um baú'
                       '\nDeseja roubar? (s/N)'
                       '\n')
@@ -75,7 +75,7 @@ class SalaArmas(Sala):
                 '\nO ar é impregnado com o cheiro de óleo de manutenção e metal polido, criando uma atmosfera de prontidão e tradição militar.'
                 '\nCada detalhe da sala evoca a sensação de preparação constante e respeito pelas artes da guerra.\n')
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         opcao = input('Deseja roubar? (s/N)')
         if opcao == 'S':
             concluido = self.desafio.iniciar()
@@ -94,7 +94,7 @@ class SalaArmas(Sala):
 
 class Biblioteca(Sala):
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         if self.desafio.iniciar():
             print('Parabéns, você acertou.')
             print('O tesouro está a 1 casa de distância de você.')
@@ -116,7 +116,7 @@ class Biblioteca(Sala):
 
 class Cozinha(Sala):
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         opcao = input('Tentar roubar comida da cozinha? (s/N)')
         if opcao.lower() in ['s', 'Sim']:
             concluido = self.desafio.iniciar()
@@ -140,7 +140,7 @@ class Cozinha(Sala):
 
 class GaleriaDeArte(Sala):
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         self.desafio.iniciar()
 
     def __str__(self):
@@ -160,7 +160,7 @@ class SalaGuardas(Sala):
                 '\nO aroma de cera de abelha das velas perfumadas mistura-se com o cheiro sutil de madeira envelhecida, enchendo o ar com uma sensação de sofisticação e cultura refinada.'
                 '\nA galeria é um testemunho do talento humano e do legado cultural que o castelo protege e celebra.\n')
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         concluido = self.desafio.iniciar()
         if concluido is None:
             pass
@@ -177,7 +177,7 @@ class SalaGuardas(Sala):
 
 class Estabulo(Sala):
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         concluido = self.desafio.iniciar()
         if concluido is None:
             print('Você já alimentou os animais.')
@@ -204,7 +204,7 @@ class Estabulo(Sala):
 
 
 class Laboratorio(Sala):
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         opcao = input('Tentar roubar poção de dano? (s/N)')
         if opcao.lower() in ['s', 'Sim']:
             concluido = self.desafio.iniciar()
@@ -231,7 +231,7 @@ class Laboratorio(Sala):
 
 class Capela(Sala):
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         self.desafio.iniciar()
 
     @staticmethod
@@ -250,7 +250,7 @@ class Capela(Sala):
 
 
 class SalaMago(Sala):
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         mapa = kwargs.get('mapa')
         concluido = self.desafio.iniciar()
 
@@ -286,7 +286,7 @@ class SalaJantar(Sala):
               '\nAromas de carnes assadas e pães frescos permeiam o ar, enquanto lareiras aquecem a sala.'
               '\nTapetes luxuosos e luz natural dos vitrais coloridos completam o ambiente, ideal para banquetes e reuniões nobres.\n')
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         self.desafio.iniciar()
 
     def __str__(self):
@@ -294,7 +294,7 @@ class SalaJantar(Sala):
 
 
 class Calabouco(Sala):
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         concluido = self.desafio.iniciar()
         if concluido:
             self.jogador.crit_chance += 2.0
@@ -333,7 +333,7 @@ class AposentosRei(Sala):
               '\nNo centro, uma enorme cama com dossel é adornada com cortinas de veludo escarlate e lençóis de seda dourada.'
               '\nMóveis de madeira entalhada, incluindo um trono imponente e uma escrivaninha ornamentada, completam o ambiente, enquanto candelabros de prata lançam uma luz cálida e suave.\n')
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         resultado = self.desafio.iniciar()
         jogador = self.jogador
         if resultado == 1:
@@ -362,7 +362,7 @@ class Torre(Sala):
               '\nNo topo, um telhado cônico de ardósia escura protege os ocupantes das intempéries, enquanto bandeiras coloridas tremulam ao vento.'
               '\nUma escada em espiral de pedra serpenteia pelo interior, conduzindo aos diferentes níveis onde quartos, armaria e salas de observação se entrelaçam numa teia de segredos e estratégia.\n')
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         self.desafio.iniciar()
 
     def __str__(self):
@@ -398,7 +398,7 @@ class SalaTesouro(Sala):
               '\nBaús de madeira maciça, cravejados de jóias, ocupam o centro do espaço.'
               '\nPilhas de moedas reluzem sob as tochas, enquanto estátuas antigas e artefatos históricos completam a cena.\n')
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         opcao = input('Deseja abrir o baú para pegar o tesouro? (s/N)')
         if opcao in ('s', 'sim'):
             print('O verdadeiro tesouro são os amigos que fazemos pelo caminho.')
@@ -409,7 +409,7 @@ class SalaTesouro(Sala):
 
 
 class SalaTesouroFalsa(SalaTesouro):
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         opcao = input('Deseja abrir o baú para pegar o tesouro? (s/N)')
         if opcao.lower() in ('s', 'sim'):
             print('Você encontrou um mímico.')
@@ -423,7 +423,7 @@ class Patio(Sala):
     def __init__(self):
         super().__init__(None)
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         opcao = input('Deseja descansar? (S/n)')
         if opcao.lower() in ('s', 'sim'):
             print('Pisando em solo de cascalho, você se depara com a vista majestosa do castelo que o cerca, a cada lado há uma entrada diferente,'
@@ -465,7 +465,7 @@ class QuartoHospedes(Sala):
               '\nUm caminho de pedras serpenteia entre os canteiros, levando a um gazebo adornado com heras.'
               '\nBancos de madeira convidam à contemplação, enquanto borboletas dançam no ar perfumado por rosas e jasmim.\n')
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         opcao = input('Deseja descansar? (S/n)')
         if opcao.lower() in ('s', 'sim'):
             print('Descansando...')
@@ -480,7 +480,7 @@ class PassagemSecreta(Sala):
         super().__init__(desafio)
         self.resultado = self.desafio.iniciar()
 
-    def interagir(self, **kwargs):
+    def desafiar(self, **kwargs):
         mapa = kwargs.get('mapa')
         if self.resultado == 6:
             print('A passagem te levou para o tesouro.')
