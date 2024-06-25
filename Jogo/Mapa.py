@@ -1,6 +1,9 @@
-from Jogo import Salas
-from Jogo import Desafios
-from Jogo import Entidades
+try:
+    from Jogo import Salas
+    from Jogo import Desafios
+    from Jogo import Entidades
+except ModuleNotFoundError:
+    print('Esse arquivo não deve ser executado, execute o main.py')
 
 
 class Mapa:
@@ -89,3 +92,4 @@ class Mapa:
             self.__jogador.sala_atual.entrar(self.__jogador)
         except AttributeError:
             pass
+

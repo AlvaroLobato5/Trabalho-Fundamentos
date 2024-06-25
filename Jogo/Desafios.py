@@ -73,4 +73,4 @@ class Dado(Desafio):
 
 
 if __name__ == '__main__':
-    Quiz(respostas=('a', ), textos=(1, 2)).iniciar()
+    print('Esse arquivo não deve ser executado, execute o main.py')

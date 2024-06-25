@@ -527,3 +527,7 @@ class SalaoFestas(Sala):
 
     def __str__(self):
         return 'Salão de Festas'
+
+
+if __name__ == '__main__':
+    print('Esse arquivo não deve ser executado, execute o main.py')

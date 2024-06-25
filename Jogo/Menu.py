@@ -72,3 +72,7 @@ class CombateMenu:
                 print(f'Você defendeu um ataque do {self.alvo}.')
 
             self.jogador.tick_veneno()
+
+
+if __name__ == '__main__':
+    print('Esse arquivo não deve ser executado, execute o main.py')

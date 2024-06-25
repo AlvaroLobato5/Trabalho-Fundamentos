@@ -238,5 +238,4 @@ class Mimico(Monstro):
 
 
 if __name__ == '__main__':
-    entidade = Entidade(10, 1)
-    entidade.vida_maxima = 200
+    print('Esse arquivo não deve ser executado, execute o main.py')
